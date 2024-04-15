@@ -5,6 +5,7 @@ dotenv.load_dotenv()
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import requests
+import os
 
 router = APIRouter()
 
@@ -12,6 +13,8 @@ class QuestionData(BaseModel):
     topic: str
     number_of_questions: int
     difficulty: str
+
+OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 
 
 # 
@@ -30,7 +33,7 @@ async def ask_ai(data: QuestionData):
         raise HTTPException(status_code=400, detail="Please enter a number greater than 0")
     
     headers = {
-        "Authorization": "Bearer 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",
+        "Authorization": f"Bearer {OPEN_AI_KEY}",
         "Content-Type": "application/json"
     }
     
